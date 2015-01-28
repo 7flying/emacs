@@ -7,6 +7,8 @@
 ;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
+;; Prevent dead-acutes and so on
+(require 'iso-transl)
 ;;
 ;; Clojure
 ;;

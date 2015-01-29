@@ -6,6 +6,10 @@
 ;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
+;;
+;; General Settings
+;;
+
 ;; Prevent dead-acutes and so on
 (require 'iso-transl)
 
@@ -15,13 +19,25 @@
   global-fci-mode fci-mode (lambda () (fci-mode 1)))
 (global-fci-mode t)
 (setq-default fill-column 80)
+
+;; Auto-coplete
+(require 'auto-complete-config)
+(setq ac-delay 0.0)
+(setq ac-quick-help-delay 0.5)
+(ac-config-default)
+
+;; Pop up contextual documentation
+(eval-after-load "cider"
+  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 ;;
 ;; Clojure
 ;;
 (require 'clojure-mode-extra-font-locking)
 (add-hook 'clojure-mode-hook #'paredit-mode)
 (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+
 ;; Cider
+;; Refresh repl after saving a file
 (add-hook 'cider-mode-hook
   '(lambda () (add-hook 'after-save-hook
     '(lambda ()
@@ -31,11 +47,18 @@
   (interactive)
   (cider-interactive-eval
    "(require 'clojure.tools.namespace.repl) (clojure.tools.namespace.repl/refresh)"))
+
+;;
+;; Common Lisp
+;;
+
 ;; Slime
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-conftribs '(slime-fancy))
 
+;;
 ;; Customization
+;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

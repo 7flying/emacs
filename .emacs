@@ -56,6 +56,24 @@
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-conftribs '(slime-fancy))
 
+
+;;
+;; LaTeX
+;;
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq TeX-PDF-mode t)
+
+;; Spell checking
+(setq ispell-program-name "aspell")
+(setq ispell-dictionary "english")
+;(setq ispell-dictionary "castellano")
+
+; Highlights the errors while writing
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+; Highlights the erros in the whole buffer
+(add-hook 'LaTeX-mode-hook 'flyspell-buffer)
+
 ;;
 ;; Customization
 ;;

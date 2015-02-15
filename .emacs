@@ -29,6 +29,8 @@
 ;; Pop up contextual documentation
 (eval-after-load "cider"
   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
+
+
 ;;
 ;; Clojure
 ;;
@@ -66,13 +68,51 @@
 
 ;; Spell checking
 (setq ispell-program-name "aspell")
-(setq ispell-dictionary "english")
-;(setq ispell-dictionary "castellano")
+;(setq ispell-dictionary "english")
+(setq ispell-dictionary "spanish")
 
 ; Highlights the errors while writing
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 ; Highlights the erros in the whole buffer
 (add-hook 'LaTeX-mode-hook 'flyspell-buffer)
+
+
+;;
+;; Python
+;;
+
+; Python mode
+(setq py-install-directory "~/.emacs.d/python-mode-6.2.0")
+(add-to-list 'load-path py-install-directory)
+(require 'python-mode)
+
+; Set the Python shell
+;(setq-default py-shell-name "ipython")
+(setq-default py-shell-name "python")
+;(setq-default py-which-bufname "IPython")
+(setq-default py-which-bufname "Python")
+
+; Switch to interpreter buffer after executing code
+(setq py-shell-switch-buffers-on-execute-p t)
+(setq py-switch-buffers-on-execute-p t)
+(setq py-split-windows-on-execute-p nil)
+
+; Smart identation
+(setq py-smart-identation t)
+
+; Pymacs
+(add-to-list 'load-path "~/.emacs.d/pymacs-0.25")
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+(autoload 'pymacs-autoload "pymacs")
+
+; Ropemacs
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
+
 
 ;;
 ;; Customization

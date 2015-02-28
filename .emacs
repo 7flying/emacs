@@ -20,7 +20,7 @@
 (global-fci-mode t)
 (setq-default fill-column 80)
 
-;; Auto-coplete
+;; Auto-complete
 (require 'auto-complete-config)
 (setq ac-delay 0.0)
 (setq ac-quick-help-delay 0.5)
@@ -86,32 +86,34 @@
 (add-to-list 'load-path py-install-directory)
 (require 'python-mode)
 
-; Set the Python shell
-;(setq-default py-shell-name "ipython")
-(setq-default py-shell-name "python")
-;(setq-default py-which-bufname "IPython")
-(setq-default py-which-bufname "Python")
+(eval-after-load "python-mode"
+  '(progn
+    ;Set the Python shell
+    ;(setq-default py-shell-name "ipython")
+    (setq-default py-shell-name "python")
+    ;(setq-default py-which-bufname "IPython")
+    (setq-default py-which-bufname "Python")
 
-; Switch to interpreter buffer after executing code
-(setq py-shell-switch-buffers-on-execute-p t)
-(setq py-switch-buffers-on-execute-p t)
-(setq py-split-windows-on-execute-p nil)
+    ; Switch to interpreter buffer after executing code
+    (setq py-shell-switch-buffers-on-execute-p t)
+    (setq py-switch-buffers-on-execute-p t)
+    (setq py-split-windows-on-execute-p nil)
 
-; Smart identation
-(setq py-smart-identation t)
+    ; Smart identation
+    (setq py-smart-identation t)
 
-; Pymacs
-(add-to-list 'load-path "~/.emacs.d/pymacs-0.25")
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-(autoload 'pymacs-autoload "pymacs")
+    ; Pymacs
+    (add-to-list 'load-path "~/.emacs.d/pymacs-0.25")
+    (autoload 'pymacs-apply "pymacs")
+    (autoload 'pymacs-call "pymacs")
+    (autoload 'pymacs-eval "pymacs" nil t)
+    (autoload 'pymacs-exec "pymacs" nil t)
+    (autoload 'pymacs-load "pymacs" nil t)
+    (autoload 'pymacs-autoload "pymacs")
 
-; Ropemacs
-(require 'pymacs)
-(pymacs-load "ropemacs" "rope-")
+    ; Ropemacs
+    (require 'pymacs)
+    (pymacs-load "ropemacs" "rope-")))
 
 
 ;;

@@ -31,6 +31,12 @@
   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
 
+;; Toggle NeoTree
+;(add-to-list 'load-path "/some/path/neotree")
+(require 'neotree)
+(global-set-key [f8] 'neotree-toggle)
+
+
 ;;
 ;; Clojure
 ;;

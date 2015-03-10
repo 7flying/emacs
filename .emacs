@@ -30,19 +30,20 @@
 (eval-after-load "cider"
   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
-
 ;; Toggle NeoTree
 ;(add-to-list 'load-path "/some/path/neotree")
 (require 'neotree)
 (global-set-key [f8] 'neotree-toggle)
 
+;; Rainbow delimiters everywhere
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 ;;
 ;; Clojure
 ;;
 (require 'clojure-mode-extra-font-locking)
 (add-hook 'clojure-mode-hook #'paredit-mode)
-(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode) ; now global
 
 ;; Cider
 ;; Refresh repl after saving a file
@@ -74,8 +75,8 @@
 
 ;; Spell checking
 (setq ispell-program-name "aspell")
-;(setq ispell-dictionary "english")
-(setq ispell-dictionary "spanish")
+(setq ispell-dictionary "english")
+;(setq ispell-dictionary "spanish")
 
 ; Highlights the errors while writing
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
@@ -119,8 +120,22 @@
 
     ; Ropemacs
     (require 'pymacs)
-    (pymacs-load "ropemacs" "rope-")))
+    (pymacs-load "ropemacs" "rope-")
+    
+    ; flymake-python
+    (when (load "flymake" t)
+         (defun flymake-pyflakes-init ()
+           (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                              'flymake-create-temp-inplace))
+              (local-file (file-relative-name
+                           temp-file
+                           (file-name-directory buffer-file-name))))
+             (list "pyflakes" (list local-file))))
 
+         (add-to-list 'flymake-allowed-file-name-masks
+                  '("\\.py\\'" flymake-pyflakes-init)))
+
+   (add-hook 'find-file-hook 'flymake-find-file-hook)))
 
 ;;
 ;; Customization

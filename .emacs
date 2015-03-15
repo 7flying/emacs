@@ -1,9 +1,9 @@
 ;; Initialize package management
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-;(add-to-list 'package-archives 
-;  '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives 
+  '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
+;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 ;;
@@ -38,6 +38,10 @@
 
 ;; Rainbow delimiters everywhere
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+; Always highlight current line
+(global-hl-line-mode 1)
+
 
 ;;
 ;; Clojure
@@ -166,4 +170,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Ubuntu Mono")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "Ubuntu Mono")))))
+

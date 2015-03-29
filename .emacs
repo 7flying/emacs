@@ -51,6 +51,9 @@
 ; Highlight indentation
 (add-hook 'prog-mode-hook 'highlight-indentation-mode)
 
+; y or n. 
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;;
 ;; Clojure
 ;;

@@ -42,6 +42,14 @@
 ; Always highlight current line
 (global-hl-line-mode 1)
 
+; Highlight TODO keywords
+(global-hl-todo-mode 1)
+
+; Highlight numbers
+(add-hook 'prog-mode-hook 'highlight-numbers-mode)
+
+; Highlight indentation
+(add-hook 'prog-mode-hook 'highlight-indentation-mode)
 
 ;;
 ;; Clojure
@@ -80,8 +88,8 @@
 
 ;; Spell checking
 (setq ispell-program-name "aspell")
-(setq ispell-dictionary "english")
-;(setq ispell-dictionary "spanish")
+;(setq ispell-dictionary "english")
+(setq ispell-dictionary "spanish")
 
 ; Highlights the errors while writing
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
@@ -124,8 +132,8 @@
     (autoload 'pymacs-autoload "pymacs")
 
     ; Ropemacs
-    (require 'pymacs)
-    (pymacs-load "ropemacs" "rope-")
+    ;(require 'pymacs)
+    ;(pymacs-load "ropemacs" "rope-")
     
     ; flymake-python
     (when (load "flymake" t)
@@ -142,8 +150,43 @@
 
    (add-hook 'find-file-hook 'flymake-find-file-hook)))
 
+; python-mode is not recognised as prog-mode (?¿), add hooks again
+(add-hook 'python-mode-hook 'highlight-numbers-mode)
+(add-hook 'python-mode-hook 'hl-todo-mode)
+(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+
+
 ;;
-;; Customization
+;; Arff mode
+;;
+(require 'generic)
+(define-generic-mode 'arff-mode
+  (list ?%)
+  (list "attribute" "relation" "end" "data")
+  '(
+    ("\\('.*'\\)" 1 'font-lock-string-face)
+    ("^\\@\\S-*\\s-\\(\\S-*\\)" 1 'font-lock-string-face)
+    ("^\\@.*\\(real\\)" 1 'font-lock-type-face)
+    ("^\\@.*\\(integer\\)" 1 'font-lock-type-face)
+    ("^\\@.*\\(numeric\\)" 1 'font-lock-type-face)
+    ("^\\@.*\\(string\\)" 1 'font-lock-type-face)
+    ("^\\@.*\\(date\\)" 1 'font-lock-type-face)
+    ("^\\@.*\\({.*}\\)" 1 'font-lock-type-face)
+    ("^\\({\\).*\\(}\\)$" (1 'font-lock-reference-face)
+     (2 'font-lock-reference-face))
+    ("\\(\\?\\)" 1 'font-lock-reference-face)
+    ("\\(\\,\\)" 1 'font-lock-keyword-face)
+    ("\\(-?[0-9]+?.?[0-9]+\\)" 1 'font-lock-constant-face)
+    ("\\(\\@\\)" 1 'font-lock-preprocessor-face))
+(list "\.arff?")
+(list (function (lambda ()
+		  (setq font-lock-defaults
+			(list 'generic-font-lock-defaults nil t ; case insensitive
+			      (list (cons ?* "w") (cons ?- "w"))))
+		  (turn-on-font-lock)))) "Mode for arff-files.")
+
+;;
+;; Customizationx
 ;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -155,6 +198,7 @@
  '(ansi-term-color-vector [unspecified "#393939" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#6699cc" "#e8e6df"])
  '(custom-enabled-themes (quote (base16-default)))
  '(custom-safe-themes (quote ("de2c46ed1752b0d0423cde9b6401062b67a6a1300c068d5d7f67725adc6c3afb" "53e29ea3d0251198924328fd943d6ead860e9f47af8d22f0b764d11168455a8e" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" "9bac44c2b4dfbb723906b8c491ec06801feb57aa60448d047dbfdbd1a8650897" "f41fd682a3cd1e16796068a2ca96e82cfd274e58b978156da0acce4d56f2b0d5" "ae8d0f1f36460f3705b583970188e4fbb145805b7accce0adb41031d99bd2580" "1affe85e8ae2667fb571fc8331e1e12840746dae5c46112d5abb0c3a973f5f5a" "51bea7765ddaee2aac2983fac8099ec7d62dff47b708aa3595ad29899e9e9e44" default)))
+ '(fancy-splash-image nil nil nil "You can only see as far as you think.")
  '(fci-rule-color "#343d46")
  '(global-linum-mode t)
  '(ido-mode (quote both) nil (ido))
@@ -170,5 +214,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "Ubuntu Mono")))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 105 :width normal :foundry "unknown" :family "Ubuntu Mono")))))
 

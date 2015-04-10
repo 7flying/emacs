@@ -1,2 +1,5 @@
 *~
 *.elc
+*.dat
+.emacs.d/auto-save-list/
+

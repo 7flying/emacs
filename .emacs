@@ -59,6 +59,9 @@
 ; Set where is the custom theme load path
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
+; Disable scroll bars
+(toggle-scroll-bar -1) 
+
 ;;
 ;; Clojure
 ;;

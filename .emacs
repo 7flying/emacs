@@ -93,20 +93,21 @@
 ;;
 ;; LaTeX
 ;;
+;(setq-default TeX-engine 'xetex)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
-(setq TeX-PDF-mode t)
-
+;(setq TeX-PDF-mode t)
+(setq-default TeX-PDF-mode t)
 ;; Spell checking
 (setq ispell-program-name "aspell")
 ; english by default and use f7 to change it
-(setq ispell-dictionary "english")
-;(setq ispell-dictionary "spanish")
+;(setq ispell-dictionary "english")
+(setq ispell-dictionary "spanish")
 
 ; Highlights the errors while writing
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'latex-mode-hook 'flyspell-mode)
 ; Highlights the erros in the whole buffer
-(add-hook 'LaTeX-mode-hook 'flyspell-buffer)
+(add-hook 'latex-mode-hook 'flyspell-buffer)
 
 
 ;;
@@ -203,9 +204,11 @@
 
 ; Set Github-flavored markdown preview (mostly for tables)
 (setq markdown-command "~/.emacs.d/flavor.rb")
+; Add flyspell on mardown by default
+(add-hook 'markdown-mode-hook 'flyspell-mode)
 
 ;;
-;; Customizationx
+;; Customization
 ;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

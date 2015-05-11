@@ -1,9 +1,9 @@
 ;; Initialize package management
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives 
-  '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
-;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+;(add-to-list 'package-archives 
+;  '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 ;;
@@ -65,6 +65,9 @@
 ; Cool mode bar
 (require 'powerline)
 (powerline-center-theme)
+
+; Automatic bracket insertion by pairs
+(electric-pair-mode 1)
 
 ;;
 ;; Clojure
@@ -233,7 +236,9 @@
  '(fci-rule-color "#343d46")
  '(global-linum-mode t)
  '(ido-mode (quote both) nil (ido))
+ '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
+ '(org-agenda-files (quote ("~/todo.org")))
  '(package-selected-packages
    (quote
     (vlf spacegray-theme slime rainbow-mode rainbow-delimiters projectile paredit nyan-mode neotree markdown-mode js2-mode hl-todo highlight-numbers highlight-indentation flymake-python-pyflakes fill-column-indicator cider base16-theme auto-complete)))

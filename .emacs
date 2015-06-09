@@ -76,6 +76,9 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
 
+; Indent everithing with spaces
+(setq-default indent-tabs-mode nil)
+
 ;;
 ;; Clojure
 ;;
@@ -103,10 +106,10 @@
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-conftribs '(slime-fancy))
 
-
 ;;
 ;; LaTeX
 ;;
+
 ;(setq-default TeX-engine 'xetex)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
@@ -122,7 +125,6 @@
 (add-hook 'latex-mode-hook 'flyspell-mode)
 ; Highlights the erros in the whole buffer
 (add-hook 'latex-mode-hook 'flyspell-buffer)
-
 
 ;;
 ;; Python
@@ -182,7 +184,6 @@
 (add-hook 'python-mode-hook 'hl-todo-mode)
 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
 
-
 ;;
 ;; Arff mode
 ;;
@@ -224,6 +225,7 @@
 ;;
 ;; Customization
 ;;
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

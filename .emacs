@@ -80,6 +80,15 @@
 (setq-default indent-tabs-mode nil)
 
 ;;
+;; Custom keys
+;; 
+(defun indent-whole-buffer ()
+  (interactive)
+  (save-excursion
+    (indent-region (point-min) (point-max) nil)))
+(global-set-key [f2] 'indent-whole-buffer)
+
+;;
 ;; Clojure
 ;;
 (require 'clojure-mode-extra-font-locking)

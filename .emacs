@@ -88,6 +88,14 @@
     (indent-region (point-min) (point-max) nil)))
 (global-set-key [f2] 'indent-whole-buffer)
 
+(defun rotate-dictionary ()
+  (interactive)
+  (let* ((dict ispell-current-dictionary)
+         (change (if (string= dict "spanish")
+                     "british" "spanish")))
+    (ispell-change-dictionary change)))
+(global-set-key [f9] 'rotate-dictionary)
+
 ;;
 ;; Clojure
 ;;
@@ -127,8 +135,8 @@
 ;; Spell checking
 (setq ispell-program-name "aspell")
 ; english by default and use f7 to change it
-;(setq ispell-dictionary "english")
-(setq ispell-dictionary "spanish")
+;(setq ispell-dictionary "spanish")
+(setq ispell-dictionary "british")
 
 ; Highlights the errors while writing
 (add-hook 'latex-mode-hook 'flyspell-mode)

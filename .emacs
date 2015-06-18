@@ -99,6 +99,12 @@
 (global-set-key [f9] 'rotate-dictionary)
 
 ;;
+;; Org mode for Trello
+;;
+(require 'org-trello)
+(custom-set-variables '(org-trello-files '("~/org-trello/")))
+
+;;
 ;; Clojure
 ;;
 (require 'clojure-mode-extra-font-locking)

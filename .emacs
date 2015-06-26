@@ -257,6 +257,15 @@
 ; Add flyspell on mardown by default
 (add-hook 'markdown-mode-hook 'flyspell-mode)
 
+
+;;
+;; NASM mode
+;;
+
+(load "~/.emacs.d/modes/nasm-mode.el")
+(require 'nasm-mode)
+(add-to-list 'auto-mode-alist '("\\.\\(asm\\)$" . nasm-mode))
+
 ;;
 ;; Customization
 ;;

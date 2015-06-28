@@ -1,9 +1,9 @@
 ;; Initialize package management
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-;(add-to-list 'package-archives 
-;  '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives 
+  '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
+;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 ;;
@@ -26,6 +26,19 @@
 (setq ac-quick-help-delay 0.5)
 (ac-config-default)
 
+;; Yasnippet
+(eval-after-load 'auto-complete
+    '(progn
+        (require 'yasnippet)
+        (yas-global-mode 1)))
+(eval-after-load 'yasnippet
+    '(progn
+        (require 'auto-complete-config)
+        (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+        (ac-config-default)
+        (ac-set-trigger-key "TAB")
+        (ac-set-trigger-key "<tab>")))
+    
 ;; Pop up contextual documentation
 (eval-after-load "cider"
   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
@@ -80,6 +93,9 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
+
+; Flymake when available
+(add-hook 'find-file-hook 'flymake-find-file-hook)
 
 ;;
 ;; Custom keys
@@ -257,7 +273,6 @@
 ; Add flyspell on mardown by default
 (add-hook 'markdown-mode-hook 'flyspell-mode)
 
-
 ;;
 ;; NASM mode
 ;;
@@ -265,6 +280,14 @@
 (load "~/.emacs.d/modes/nasm-mode.el")
 (require 'nasm-mode)
 (add-to-list 'auto-mode-alist '("\\.\\(asm\\)$" . nasm-mode))
+
+;;
+;; C/C++ mode
+;;
+(setq-default c-basic-offset 4 c-default-style "linux")
+(define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
+;(require 'ac-clang)
+;(define-key c++-mode-map (kbd "C-S-<return>") 'ac-clang)
 
 ;;
 ;; Customization

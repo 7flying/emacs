@@ -21,6 +21,7 @@
 (setq-default fill-column 80)
 
 ;; Auto-complete
+(require 'auto-complete)
 (require 'auto-complete-config)
 (setq ac-delay 0.0)
 (setq ac-quick-help-delay 0.5)
@@ -39,9 +40,6 @@
         (ac-set-trigger-key "TAB")
         (ac-set-trigger-key "<tab>")))
     
-;; Pop up contextual documentation
-(eval-after-load "cider"
-  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
 ;; Toggle NeoTree
 ;(add-to-list 'load-path "/some/path/neotree")
@@ -97,6 +95,10 @@
 ; Flymake when available
 (add-hook 'find-file-hook 'flymake-find-file-hook)
 
+; TRAMP
+(setq tramp-default-method "ssh")
+
+
 ;;
 ;; Custom keys
 ;; 
@@ -128,6 +130,9 @@
 ;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode) ; now global
 
 ;; Cider
+;; Pop up contextual documentation
+(eval-after-load "cider"
+  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 ;; Refresh repl after saving a file
 (add-hook 'cider-mode-hook
   '(lambda () (add-hook 'after-save-hook
@@ -284,6 +289,7 @@
 ;;
 ;; C/C++ mode
 ;;
+(require 'cc-mode)
 (setq-default c-basic-offset 4 c-default-style "linux")
 (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
 ;(require 'ac-clang)

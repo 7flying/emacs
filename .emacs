@@ -153,7 +153,7 @@
   '(progn
      (add-to-list 'ac-modes 'cider-mode)
      (add-to-list 'ac-modes 'cider-repl-mode)))
-
+    
 ;;
 ;; Common Lisp
 ;;
@@ -294,6 +294,13 @@
 (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
 ;(require 'ac-clang)
 ;(define-key c++-mode-map (kbd "C-S-<return>") 'ac-clang)
+
+;; Linux C Mode
+(defun linux-c-mode ()
+  (interactive)
+  (c-mode)
+  (c-set-style "K&R")
+  (setq c-basic-offset 8))
 
 ;;
 ;; Customization

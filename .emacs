@@ -98,7 +98,11 @@
 ; TRAMP
 (setq tramp-default-method "ssh")
 
-
+; Show flycheck errors on popups
+(eval-after-load 'flycheck
+    '(custom-set-variables
+    '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+    
 ;;
 ;; Custom keys
 ;; 

@@ -96,6 +96,9 @@
 ; Flymake when available
 (add-hook 'find-file-hook 'flymake-find-file-hook)
 
+; Flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
 ; TRAMP
 (setq tramp-default-method "ssh")
 

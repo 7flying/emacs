@@ -314,6 +314,25 @@
   (setq c-basic-offset 8))
 
 ;;
+;; R
+;;
+
+;; Use ESS
+(add-to-list 'load-path "~/.emacs.d/ESS-15.09/lisp/")
+(load "ess-site")
+(require 'ess-site)
+
+;;
+;; Java :(
+;;
+
+; Eclim
+;(require 'eclim)
+;(global-eclim-mode)
+;(custom-set-variables
+; '(eclim-eclipse-dirs '("~/sw/eclipse")))
+
+;;
 ;; Customization
 ;;
 

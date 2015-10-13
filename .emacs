@@ -1,8 +1,8 @@
 ;; Initialize package management
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives 
-  '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+    '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
 ;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
@@ -138,7 +138,6 @@
 ;;
 (require 'clojure-mode-extra-font-locking)
 (add-hook 'clojure-mode-hook #'paredit-mode)
-;(add-hook 'clojure-mode-hook #'rainbow-delimiters-mode) ; now global
 
 ;; Cider
 ;; Pop up contextual documentation
@@ -174,13 +173,16 @@
 (setq slime-conftribs '(slime-fancy))
 
 ;;
+;; Hy
+;;
+(add-hook 'hy-mode-hook #'paredit-mode)
+   
+;;
 ;; LaTeX
 ;;
 
-;(setq-default TeX-engine 'xetex)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
-;(setq TeX-PDF-mode t)
 (setq-default TeX-PDF-mode t)
 ;; Spell checking
 (setq ispell-program-name "aspell")

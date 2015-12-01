@@ -6,6 +6,7 @@
 ;(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
+(add-to-list 'load-path "~/.emacs.d/lisp/")
 ;;
 ;; General Settings
 ;;
@@ -75,7 +76,7 @@
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (fringe-mode 4)
-
+    
 ; Cool mode bar
 (require 'powerline)
 (powerline-center-theme)
@@ -110,7 +111,11 @@
 (require 'flycheck-color-mode-line)
 (eval-after-load "flycheck"
     '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
-    
+
+; Shell
+(require 'multi-term)
+(setq multi-term-program "/bin/bash")
+ 
 ;;
 ;; Custom keys
 ;; 
@@ -127,6 +132,7 @@
                      "british" "spanish")))
     (ispell-change-dictionary change)))
 (global-set-key [f9] 'rotate-dictionary)
+
 
 ;;
 ;; Org mode for Trello
@@ -327,7 +333,7 @@
 ;;
 ;; Octave/Mathlab
 ;;
-(autoload 'octave-mode "octave-mod" nil t)
+;(autoload 'octave-mode "octave-mode" nil t)
 (setq auto-mode-alist
       (cons '("\\.m$" . octave-mode) auto-mode-alist))
 

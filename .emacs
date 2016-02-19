@@ -30,22 +30,22 @@
 
 ;; Yasnippet
 (eval-after-load 'auto-complete
-    '(progn
-        (require 'yasnippet)
-        (yas-global-mode 1)))
+  '(progn
+     (require 'yasnippet)
+     (yas-global-mode 1)))
 (eval-after-load 'yasnippet
-    '(progn
-        (require 'auto-complete-config)
-        (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-        (ac-config-default)
-        (ac-set-trigger-key "TAB")
-        (ac-set-trigger-key "<tab>")))
-    
+  '(progn
+     (require 'auto-complete-config)
+     (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+     (ac-config-default)
+     (ac-set-trigger-key "TAB")
+     (ac-set-trigger-key "<tab>")))
+
 
 ;; Toggle NeoTree
 ;(add-to-list 'load-path "/some/path/neotree")
 (require 'neotree)
-(global-set-key [f8] 'neotree-toggle)
+(global-set-key [f8] 'neotree-tgogle)
 (setq neo-smart-open t)
 
 ;; Rainbow delimiters everywhere
@@ -76,9 +76,10 @@
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (fringe-mode 4)
-    
+
 ; Cool mode bar
 (require 'powerline)
+;(powerline-default-theme)
 (powerline-center-theme)
 
 ; Automatic bracket insertion by pairs
@@ -104,18 +105,38 @@
 (setq tramp-default-method "ssh")
 
 ; Show flycheck errors on popups
-(eval-after-load 'flycheck
-    '(custom-set-variables
-    '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+;(eval-after-load 'flycheck
+;    '(custom-set-variables
+;    '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
 ; Color the mode line based on the flycheck state
 (require 'flycheck-color-mode-line)
 (eval-after-load "flycheck"
-    '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+  '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
 
 ; Shell
 (require 'multi-term)
 (setq multi-term-program "/bin/bash")
- 
+
+; Company mode
+; Reduce the time after which the company auto completion popup opens
+(setq company-idle-delay 0.2)
+
+; Reduce the number of characters before company kicks in
+(setq company-minimum-prefix-length 1)
+
+; the tab key may be used to indent or to autocomplete
+(defun indent-or-complete ()
+  (interactive)
+  (if (looking-at "\\_>")
+      (company-complete-common)
+    (indent-according-to-mode)))
+
+(add-hook 'company-mode
+    (lambda ()
+     (define-key indent-or-complete-map (kdb "TAB") 'complete-or-indent)))
+(setq company-tooltip-align-annotations t)
+
+
 ;;
 ;; Custom keys
 ;; 
@@ -132,7 +153,6 @@
                      "british" "spanish")))
     (ispell-change-dictionary change)))
 (global-set-key [f9] 'rotate-dictionary)
-
 
 ;;
 ;; Org mode for Trello
@@ -151,10 +171,10 @@
   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 ;; Refresh repl after saving a file
 (add-hook 'cider-mode-hook
-  '(lambda () (add-hook 'after-save-hook
-    '(lambda ()
-      (if (and (boundp 'cider-mode) cider-mode)
-        (cider-namespace-refresh))))))
+          '(lambda () (add-hook 'after-save-hook
+                                '(lambda ()
+                                   (if (and (boundp 'cider-mode) cider-mode)
+                                       (cider-namespace-refresh))))))
 (defun cider-namespace-refresh ()
   (interactive)
   (cider-interactive-eval
@@ -169,7 +189,7 @@
   '(progn
      (add-to-list 'ac-modes 'cider-mode)
      (add-to-list 'ac-modes 'cider-repl-mode)))
-    
+
 ;;
 ;; Common Lisp
 ;;
@@ -182,7 +202,17 @@
 ;; Hy
 ;;
 (add-hook 'hy-mode-hook #'paredit-mode)
-   
+
+;;
+;; Java
+;;
+; Eclim
+;(require 'eclim)
+;(global-eclim-mode)
+;(custom-set-variables
+; '(eclim-eclipse-dirs '("~/sw/eclipse")))
+
+
 ;;
 ;; LaTeX
 ;;
@@ -190,6 +220,7 @@
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-PDF-mode t)
+
 ;; Spell checking
 (setq ispell-program-name "aspell")
 ; english by default and use f7 to change it
@@ -212,47 +243,46 @@
 
 (eval-after-load "python-mode"
   '(progn
-    ;Set the Python shell
-    ;(setq-default py-shell-name "ipython")
-    (setq-default py-shell-name "python")
-    ;(setq-default py-which-bufname "IPython")
-    (setq-default py-which-bufname "Python")
+     ;Set the Python shell
+     ;(setq-default py-shell-name "ipython")
+     (setq-default py-shell-name "python")
+     ;(setq-default py-which-bufname "IPython")
+     (setq-default py-which-bufname "Python")
 
-    ; Switch to interpreter buffer after executing code
-    (setq py-shell-switch-buffers-on-execute-p t)
-    (setq py-switch-buffers-on-execute-p t)
-    (setq py-split-windows-on-execute-p nil)
+     ; Switch to interpreter buffer after executing code
+     (setq py-shell-switch-buffers-on-execute-p t)
+     (setq py-switch-buffers-on-execute-p t)
+     (setq py-split-windows-on-execute-p nil)
 
-    ; Smart identation
-    (setq py-smart-identation t)
+     ; Smart identation
+     (setq py-smart-identation t)
 
-    ; Pymacs
-    (add-to-list 'load-path "~/.emacs.d/pymacs-0.25")
-    (autoload 'pymacs-apply "pymacs")
-    (autoload 'pymacs-call "pymacs")
-    (autoload 'pymacs-eval "pymacs" nil t)
-    (autoload 'pymacs-exec "pymacs" nil t)
-    (autoload 'pymacs-load "pymacs" nil t)
-    (autoload 'pymacs-autoload "pymacs")
+     ; Pymacs
+     (add-to-list 'load-path "~/.emacs.d/pymacs-0.25")
+     (autoload 'pymacs-apply "pymacs")
+     (autoload 'pymacs-call "pymacs")
+     (autoload 'pymacs-eval "pymacs" nil t)
+     (autoload 'pymacs-exec "pymacs" nil t)
+     (autoload 'pymacs-load "pymacs" nil t)
+     (autoload 'pymacs-autoload "pymacs")
 
-    ; Ropemacs
-    ;(require 'pymacs)
-    ;(pymacs-load "ropemacs" "rope-")
-    
-    ; flymake-python
-    (when (load "flymake" t)
-         (defun flymake-pyflakes-init ()
-           (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                              'flymake-create-temp-inplace))
-              (local-file (file-relative-name
-                           temp-file
-                           (file-name-directory buffer-file-name))))
-             (list "pyflakes" (list local-file))))
+     ; Ropemacs
+     ;(require 'pymacs)
+     ;(pymacs-load "ropemacs" "rope-")
 
-         (add-to-list 'flymake-allowed-file-name-masks
-                  '("\\.py\\'" flymake-pyflakes-init)))
+     ; flymake-python
+     (when (load "flymake" t)
+       (defun flymake-pyflakes-init ()
+         (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                            'flymake-create-temp-inplace))
+                (local-file (file-relative-name
+                             temp-file
+                             (file-name-directory buffer-file-name))))
+               (list "pyflakes" (list local-file))))
+       (add-to-list 'flymake-allowed-file-name-masks
+                    '("\\.py\\'" flymake-pyflakes-init)))
 
-   (add-hook 'find-file-hook 'flymake-find-file-hook)))
+     (add-hook 'find-file-hook 'flymake-find-file-hook)))
 
 ; python-mode is not recognised as prog-mode (?¿), add hooks again
 (add-hook 'python-mode-hook 'highlight-numbers-mode)
@@ -281,12 +311,13 @@
     ("\\(\\,\\)" 1 'font-lock-keyword-face)
     ("\\(-?[0-9]+?.?[0-9]+\\)" 1 'font-lock-constant-face)
     ("\\(\\@\\)" 1 'font-lock-preprocessor-face))
-(list "\.arff?")
-(list (function (lambda ()
-		  (setq font-lock-defaults
-			(list 'generic-font-lock-defaults nil t ; case insensitive
-			      (list (cons ?* "w") (cons ?- "w"))))
-		  (turn-on-font-lock)))) "Mode for arff-files.")
+  (list "\.arff?")
+  (list (function
+     (lambda ()
+         (setq font-lock-defaults
+            (list 'generic-font-lock-defaults nil t ; case insensitive
+                (list (cons ?* "w") (cons ?- "w"))))
+         (turn-on-font-lock)))) "Mode for arff-files.")
 
 ;;
 ;; Markdown mode
@@ -310,7 +341,7 @@
 ;;
 (require 'cc-mode)
 (setq-default c-basic-offset 4 c-default-style "linux")
-(define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
+;(define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
 ;(require 'ac-clang)
 ;(define-key c++-mode-map (kbd "C-S-<return>") 'ac-clang)
 
@@ -326,34 +357,55 @@
 ;;
 
 ;; Use ESS
-(add-to-list 'load-path "~/.emacs.d/ESS-15.09/lisp/")
-(load "ess-site")
-(require 'ess-site)
+;(add-to-list 'load-path "~/.emacs.d/ESS/lisp/")
+;(load "ess-site")
+;(require 'ess-site)
 
 ;;
-;; Octave/Mathlab
+;; Matlab - Octave
 ;;
-;(autoload 'octave-mode "octave-mode" nil t)
+;(autoload 'octave-mode "octave-mod" nil t)
 (setq auto-mode-alist
       (cons '("\\.m$" . octave-mode) auto-mode-alist))
 
+(add-hook 'octave-mode-hook
+          (lambda ()
+            (abbrev-mode 1)
+            (auto-fill-mode 1)
+            (if (eq window-system 'x)
+                (font-lock-mode 1))))
+
 ;;
-;; Java :(
+;; Hy
 ;;
 
-; Eclim
-;(require 'eclim)
-;(global-eclim-mode)
-;(custom-set-variables
-; '(eclim-eclipse-dirs '("~/sw/eclipse")))
+(add-hook 'hy-mode-hook #'paredit-mode)
+
+
+;;
+;; Rust
+;;
+
+; Set path to racer binary
+(setq racer-cmd "/usr/local/bin/racer")
+; Set path to rust src directory
+(setq racer-rust-src-path "~/sw/rust/src/")
+; Load rust-mode when you open `.rs` files
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+; Setting up configurations when you load rust-mode
+(add-hook 'racer-mode-hook #'company-mode)
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+(add-hook 'racer-mode-hook #'company-mode)
+
 
 ;;
 ;; Customization
 ;;
 
 
- ;;
- ;; More customization
+;;
+;; More customization
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

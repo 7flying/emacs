@@ -311,6 +311,10 @@
 (require 'cc-mode)
 (setq-default c-basic-offset 4 c-default-style "linux")
 (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
+; Use c++11
+(add-hook 'c++-mode-hook
+          (lambda () (setq-default flycheck-clang-language-standard "c++11"
+                                   flycheck-gcc-language-standard "c++11")))
 ;(require 'ac-clang)
 ;(define-key c++-mode-map (kbd "C-S-<return>") 'ac-clang)
 

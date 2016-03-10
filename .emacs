@@ -21,12 +21,27 @@
 (global-fci-mode t)
 (setq-default fill-column 80)
 
-;; Auto-complete
-(require 'auto-complete)
-(require 'auto-complete-config)
-(setq ac-delay 0.0)
-(setq ac-quick-help-delay 0.5)
-(ac-config-default)
+;; Company mode
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+
+; Reduce the time after which the company auto completion popup opens
+(setq company-idle-delay 0.2)
+
+; Reduce the number of characters before company kicks in
+(setq company-minimum-prefix-length 1)
+
+; the tab key may be used to indent or to autocomplete
+(defun indent-or-complete ()
+  (interactive)
+  (if (looking-at "\\_>")
+      (company-complete-common)
+    (indent-according-to-mode)))
+
+(add-hook 'company-mode
+    (lambda ()
+     (define-key indent-or-complete-map (kdb "TAB") 'complete-or-indent)))
+(setq company-tooltip-align-annotations t)
 
 ;; Yasnippet
 (eval-after-load 'auto-complete
@@ -95,8 +110,8 @@
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
 
-; Flymake when available
-(add-hook 'find-file-hook 'flymake-find-file-hook)
+; Disable flymake
+(remove-hook 'elpy-modules 'elpy-module-flymake)
 
 ; Flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -105,9 +120,10 @@
 (setq tramp-default-method "ssh")
 
 ; Show flycheck errors on popups
-;(eval-after-load 'flycheck
-;    '(custom-set-variables
-;    '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+(eval-after-load 'flycheck
+    '(custom-set-variables
+    '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+
 ; Color the mode line based on the flycheck state
 (require 'flycheck-color-mode-line)
 (eval-after-load "flycheck"
@@ -117,24 +133,7 @@
 (require 'multi-term)
 (setq multi-term-program "/bin/bash")
 
-; Company mode
-; Reduce the time after which the company auto completion popup opens
-(setq company-idle-delay 0.2)
 
-; Reduce the number of characters before company kicks in
-(setq company-minimum-prefix-length 1)
-
-; the tab key may be used to indent or to autocomplete
-(defun indent-or-complete ()
-  (interactive)
-  (if (looking-at "\\_>")
-      (company-complete-common)
-    (indent-according-to-mode)))
-
-(add-hook 'company-mode
-    (lambda ()
-     (define-key indent-or-complete-map (kdb "TAB") 'complete-or-indent)))
-(setq company-tooltip-align-annotations t)
 
 
 ;;

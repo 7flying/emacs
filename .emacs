@@ -58,7 +58,6 @@
 
 
 ;; Toggle NeoTree
-;(add-to-list 'load-path "/some/path/neotree")
 (require 'neotree)
 (global-set-key [f8] 'neotree-tgogle)
 (setq neo-smart-open t)
@@ -92,9 +91,14 @@
 (menu-bar-mode 0)
 (fringe-mode 4)
 
+; 5 line margin on scrolls, step of 1
+(setq scroll-margin 5 scroll-conservatively 9999 scroll-step 1)
+
+; wrap lines
+(global-visual-line-mode)
+
 ; Cool mode bar
 (require 'powerline)
-;(powerline-default-theme)
 (powerline-center-theme)
 
 ; Automatic bracket insertion by pairs
@@ -157,6 +161,10 @@
 ;; Org mode for Trello
 ;;
 (require 'org-trello)
+
+;;;;
+;;;; -- Programming language specific stuff --
+;;;;
 
 ;;
 ;; Clojure
@@ -223,7 +231,6 @@
 ;; Spell checking
 (setq ispell-program-name "aspell")
 ; english by default and use f7 to change it
-;(setq ispell-dictionary "spanish")
 (setq ispell-dictionary "british")
 
 ; Highlights the errors while writing
@@ -236,52 +243,6 @@
 ;;
 
 ; Python mode
-(setq py-install-directory "~/.emacs.d/python-mode-6.2.0")
-(add-to-list 'load-path py-install-directory)
-(require 'python-mode)
-
-(eval-after-load "python-mode"
-  '(progn
-     ;Set the Python shell
-     ;(setq-default py-shell-name "ipython")
-     (setq-default py-shell-name "python")
-     ;(setq-default py-which-bufname "IPython")
-     (setq-default py-which-bufname "Python")
-
-     ; Switch to interpreter buffer after executing code
-     (setq py-shell-switch-buffers-on-execute-p t)
-     (setq py-switch-buffers-on-execute-p t)
-     (setq py-split-windows-on-execute-p nil)
-
-     ; Smart identation
-     (setq py-smart-identation t)
-
-     ; Pymacs
-     (add-to-list 'load-path "~/.emacs.d/pymacs-0.25")
-     (autoload 'pymacs-apply "pymacs")
-     (autoload 'pymacs-call "pymacs")
-     (autoload 'pymacs-eval "pymacs" nil t)
-     (autoload 'pymacs-exec "pymacs" nil t)
-     (autoload 'pymacs-load "pymacs" nil t)
-     (autoload 'pymacs-autoload "pymacs")
-
-     ; Ropemacs
-     ;(require 'pymacs)
-     ;(pymacs-load "ropemacs" "rope-")
-
-     ; flymake-python
-     (when (load "flymake" t)
-       (defun flymake-pyflakes-init ()
-         (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                            'flymake-create-temp-inplace))
-                (local-file (file-relative-name
-                             temp-file
-                             (file-name-directory buffer-file-name))))
-               (list "pyflakes" (list local-file))))
-       (add-to-list 'flymake-allowed-file-name-masks
-                    '("\\.py\\'" flymake-pyflakes-init)))
-
-     (add-hook 'find-file-hook 'flymake-find-file-hook)))
 
 ; python-mode is not recognised as prog-mode (?¿), add hooks again
 (add-hook 'python-mode-hook 'highlight-numbers-mode)
@@ -340,11 +301,20 @@
 ;;
 (require 'cc-mode)
 (setq-default c-basic-offset 4 c-default-style "linux")
-;(define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
+(define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
+
 ; Use c++11
 (add-hook 'c++-mode-hook
           (lambda () (setq-default flycheck-clang-language-standard "c++11"
                                    flycheck-gcc-language-standard "c++11")))
+
+; company for c++ headers
+(add-hook 'c++-mode-hook
+         (lambda () (add-to-list 'company-c-headers-path-system
+                                 "/usr/include/c++/4.9/")))
+; Auto-completion for C/C++ headers
+(add-to-list 'company-backends 'company-c-headers)
+
 ;(require 'ac-clang)
 ;(define-key c++-mode-map (kbd "C-S-<return>") 'ac-clang)
 
@@ -354,6 +324,22 @@
   (c-mode)
   (c-set-style "K&R")
   (setq c-basic-offset 8))
+
+;;
+;; Rust
+;;
+
+; Set path to racer binary
+(setq racer-cmd "/usr/local/bin/racer")
+; Set path to rust src directory
+(setq racer-rust-src-path "~/sw/rust/src/")
+; Load rust-mode when you open `.rs` files
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+; Setting up configurations when you load rust-mode
+(add-hook 'racer-mode-hook #'company-mode)
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+(add-hook 'racer-mode-hook #'company-mode)
 
 ;;
 ;; R
@@ -383,23 +369,6 @@
 ;;
 
 (add-hook 'hy-mode-hook #'paredit-mode)
-
-
-;;
-;; Rust
-;;
-
-; Set path to racer binary
-(setq racer-cmd "/usr/local/bin/racer")
-; Set path to rust src directory
-(setq racer-rust-src-path "~/sw/rust/src/")
-; Load rust-mode when you open `.rs` files
-(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-; Setting up configurations when you load rust-mode
-(add-hook 'racer-mode-hook #'company-mode)
-(add-hook 'rust-mode-hook #'racer-mode)
-(add-hook 'racer-mode-hook #'eldoc-mode)
-(add-hook 'racer-mode-hook #'company-mode)
 
 
 ;;

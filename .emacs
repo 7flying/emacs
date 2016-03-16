@@ -238,6 +238,9 @@
 ; Highlights the erros in the whole buffer
 (add-hook 'latex-mode-hook 'flyspell-buffer)
 
+; Reload from disk when the document is compiled :)
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
 ;;
 ;; Python
 ;;

@@ -241,6 +241,13 @@
 ; Reload from disk when the document is compiled :)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
+; DocView in continuous mode for easy scrolling
+(setq doc-view-continuous t)
+
+; 120 for latex
+(add-hook 'latex-mode-hook
+          (lambda () (set-fill-column 120)))
+
 ;;
 ;; Python
 ;;

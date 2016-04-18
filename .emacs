@@ -248,6 +248,9 @@
 (add-hook 'latex-mode-hook
           (lambda () (set-fill-column 120)))
 
+; Doc-view resolution
+(setq doc-view-resolution 300)
+
 ;;
 ;; Python
 ;;

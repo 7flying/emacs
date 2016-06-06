@@ -331,12 +331,26 @@
 ;(require 'ac-clang)
 ;(define-key c++-mode-map (kbd "C-S-<return>") 'ac-clang)
 
+;; Pebble C mode
+(defun pebble-c-mode ()
+  (interactive)
+  (c-mode)
+  (add-to-list 'company-c-headers-path-system
+               "~/.pebble-sdk/SDKs/3.9.2/sdk-core/pebble/chalk/include/")
+  (setq flycheck-clang-include-path
+        (list (expand-file-name "~/.pebble-sdk/SDKs/3.9.2/sdk-core/pebble/chalk/include/"))))
+
 ;; Linux C Mode
 (defun linux-c-mode ()
   (interactive)
   (c-mode)
   (c-set-style "K&R")
   (setq c-basic-offset 8))
+
+(defun c-99-hook ()
+  (setq flycheck-gcc-language-standard "gnu99"))
+
+(add-hook 'c-mode-hook #'c-99-hook)
 
 ;;
 ;; Rust

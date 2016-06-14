@@ -255,12 +255,22 @@
 ;; Python
 ;;
 
-; Python mode
-
-; python-mode is not recognised as prog-mode (?¿), add hooks again
+; General
 (add-hook 'python-mode-hook 'highlight-numbers-mode)
 (add-hook 'python-mode-hook 'hl-todo-mode)
 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+
+; Anaconda: needs an inferior Python process to complete built-in definitions
+(add-hook 'python-mode-hook 'run-python-once)
+
+(defun run-python-once ()
+  (remove-hook 'python-mode-hook 'run-python-once)
+  (run-python))
+
+; Anaconda for company
+(eval-after-load "company" '(add-to-list 'company-backends 'company-anaconda))
+(add-hook 'python-mode-hook 'anaconda-mode)
+
 
 ;;
 ;; Arff mode

@@ -210,15 +210,6 @@
 ;;
 (add-hook 'hy-mode-hook #'paredit-mode)
 
-;;
-;; Java
-;;
-; Eclim
-;(require 'eclim)
-;(global-eclim-mode)
-;(custom-set-variables
-; '(eclim-eclipse-dirs '("~/sw/eclipse")))
-
 
 ;;
 ;; LaTeX

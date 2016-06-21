@@ -157,6 +157,13 @@
     (ispell-change-dictionary change)))
 (global-set-key [f9] 'rotate-dictionary)
 
+; Move more easily between buffers 
+(global-set-key (kbd "C-c j")  'windmove-left)
+(global-set-key (kbd "C-c l") 'windmove-right)
+(global-set-key (kbd "C-c i")    'windmove-up)
+(global-set-key (kbd "C-c k")  'windmove-down)
+
+
 ;;
 ;; Org mode for Trello
 ;;

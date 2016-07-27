@@ -67,8 +67,6 @@
 
 ; Always highlight current line
 (global-hl-line-mode 1)
-(set-face-background 'hl-line "#3e4446")
-(set-face-foreground 'highlight nil)
 
 ; Highlight TODO keywords
 (global-hl-todo-mode 1)
@@ -97,6 +95,10 @@
 ; wrap lines
 (global-visual-line-mode)
 
+; Auto auto-fill (pun intended) to 80 columns on tex-mode
+(add-hook 'text-mode-hook '(lambda() (turn-on-auto-fill) (set-fill-column 80)))
+
+
 ; Cool mode bar
 (require 'powerline)
 (powerline-center-theme)
@@ -105,11 +107,11 @@
 (electric-pair-mode 1)
 
 ; When two buffers have the same name display buff|dir1 and buff|dir2
-; insted of buff<1> buff<2>
+; instead of buff<1> buff<2>
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
 
-; Indent everithing with spaces
+; Indent everything with spaces
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
@@ -136,8 +138,6 @@
 ; Shell
 (require 'multi-term)
 (setq multi-term-program "/bin/bash")
-
-
 
 
 ;;
@@ -216,7 +216,6 @@
 ;; Hy
 ;;
 (add-hook 'hy-mode-hook #'paredit-mode)
-
 
 ;;
 ;; LaTeX
@@ -304,9 +303,9 @@
 ;; Markdown mode
 ;;
 
-; Set Github-flavored markdown preview (mostly for tables)
+; Set Github-flavoured markdown preview (mostly for tables)
 (setq markdown-command "~/.emacs.d/flavor.rb")
-; Add flyspell on mardown by default
+; Add flyspell on markdown by default
 (add-hook 'markdown-mode-hook 'flyspell-mode)
 
 ;;
@@ -336,8 +335,6 @@
 ; Auto-completion for C/C++ headers
 (add-to-list 'company-backends 'company-c-headers)
 
-;(require 'ac-clang)
-;(define-key c++-mode-map (kbd "C-S-<return>") 'ac-clang)
 
 ;; Pebble C mode
 (defun pebble-c-mode ()
@@ -400,13 +397,6 @@
                 (font-lock-mode 1))))
 
 ;;
-;; Hy
-;;
-
-(add-hook 'hy-mode-hook #'paredit-mode)
-
-
-;;
 ;; Customization
 ;;
 
@@ -435,7 +425,7 @@
  '(custom-enabled-themes (quote (base16-eighties-dark-seven)))
  '(custom-safe-themes
    (quote
-    ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "002052c92d3d69cce8ca0c9cfed88a94ac90c375b757b340e1f45a0adcfdd144" "519c7982c121f897d3393af29b3711c7078c619be93f8b1de84fa8412534924a" "de2c46ed1752b0d0423cde9b6401062b67a6a1300c068d5d7f67725adc6c3afb" "53e29ea3d0251198924328fd943d6ead860e9f47af8d22f0b764d11168455a8e" "e53cc4144192bb4e4ed10a3fa3e7442cae4c3d231df8822f6c02f1220a0d259a" "9bac44c2b4dfbb723906b8c491ec06801feb57aa60448d047dbfdbd1a8650897" "f41fd682a3cd1e16796068a2ca96e82cfd274e58b978156da0acce4d56f2b0d5" "ae8d0f1f36460f3705b583970188e4fbb145805b7accce0adb41031d99bd2580" "1affe85e8ae2667fb571fc8331e1e12840746dae5c46112d5abb0c3a973f5f5a" "51bea7765ddaee2aac2983fac8099ec7d62dff47b708aa3595ad29899e9e9e44" default)))
+    ("67fdaff573b9ba142ab79cdc5b24b2b55b77cc786524efe33d3a4a7e1f82500b" default)))
  '(fancy-splash-image nil nil nil "You can only see as far as you think.")
  '(fci-rule-color "#343d46")
  '(ido-mode (quote both) nil (ido))

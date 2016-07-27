@@ -1,14 +1,15 @@
 ;;; base16-eighties-dark-seven-theme.el --- an Emacs 24 theme
-;;; based on Base16 Eighties Dark (tmTheme)
+;;; based on Base16 Eighties Dark (tmTheme), now it is something completely
+;;; different *_*
 ;;
 ;;; Author: Seven Flying, Auto Converted to Emacs 24 by tmtheme-to-deftheme (tm2deftheme)
-;;; Version: 1428670370
+;;; Version: 20160727
 ;;; Original author: Chris Kempson (http://chriskempson.com)
 ;;; Url: https://github.com/emacsfodder/tmtheme-to-deftheme
 ;;; Package-Requires: ((emacs "24.0"))
 ;;
 ;;; Commentary:
-;;  This theme if a modification of Base16 Eighties 
+;;; This theme is a modification of Base16 Eighties
 ;;
 ;;; Code:
 
@@ -16,8 +17,7 @@
   "base16-eighties-dark-seven-theme - Created by Seven Flying - 2015-04-10 15:51:50 +0200")
 
 (custom-theme-set-variables
- 'base16-eighties-dark-seven
-)
+ 'base16-eighties-dark-seven)
 
 (custom-theme-set-faces
  'base16-eighties-dark-seven
@@ -28,14 +28,16 @@
  '(cursor  ((t (:background "#d3d0c8"))))
 
  ;; Temporary defaults
- '(linum                               ((t (:foreground "#d3d0c8"  :background "#3e3d3c" ))))
- '(fringe                              ((t (                       :background "#3e3d3c" ))))
+ '(linum                               ((t (:foreground "#75b5aa"  :background "#2d2d2d" ))))
+ '(fringe                              ((t (                       :background "#2d2d2d" ))))
 
- '(minibuffer-prompt                   ((t (:foreground "#1278A8"  :background nil       :weight bold                                  ))))
+ '(minibuffer-prompt                   ((t (:foreground "orange"   :background nil       :weight bold                                  ))))
  '(escape-glyph                        ((t (:foreground "orange"   :background nil                                                     ))))
- '(highlight                           ((t (:foreground nil   :background "#fffccc"                                                    ))))
+ '(highlight                           ((t (:foreground nil        :background "#3e4446"                                                    ))))
  '(shadow                              ((t (:foreground "#447777"  :background nil                                                     ))))
 
+ '(vertical-border                     ((t (:foreground "#282a2e"  :background nil))))
+ 
  '(trailing-whitespace                 ((t (:foreground "#FFFFFF"  :background "#C74000"                                               ))))
  '(link                                ((t (:foreground "#00b7f0"  :background nil       :underline t                                  ))))
  '(link-visited                        ((t (:foreground "#4488cc"                        :underline t :inherit (link)                  ))))

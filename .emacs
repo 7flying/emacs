@@ -323,6 +323,10 @@
 (setq-default c-basic-offset 4 c-default-style "linux")
 (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
 
+; safe args for .dir-locals.el
+(put 'flycheck-clang-args 'safe-local-variable (lambda (xx) t))
+(put 'flycheck-gcc-args 'safe-local-variable (lambda (xx) t))
+
 ; Use c++11
 (add-hook 'c++-mode-hook
           (lambda () (setq-default flycheck-clang-language-standard "c++11"
@@ -335,6 +339,16 @@
 ; Auto-completion for C/C++ headers
 (add-to-list 'company-backends 'company-c-headers)
 
+
+; Show function signatures
+; and enable semantic on C/C++
+(defun semantic-c-and-cpp ()
+    (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+    (semantic-mode 1)
+    (require 'stickyfunc-enhance))
+
+(add-hook 'c++-mode-hook #'semantic-c-and-cpp)
+(add-hook 'c-mode-hook #'semantic-c-and-cpp)
 
 ;; Pebble C mode
 (defun pebble-c-mode ()

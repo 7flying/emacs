@@ -164,10 +164,6 @@
 (global-set-key (kbd "C-c k")  'windmove-down)
 
 
-;;
-;; Org mode for Trello
-;;
-(require 'org-trello)
 
 ;;;;
 ;;;; -- Programming language specific stuff --
@@ -227,7 +223,7 @@
 
 ;; Spell checking
 (setq ispell-program-name "aspell")
-; english by default and use f7 to change it
+; english by default and use f9 to change it
 (setq ispell-dictionary "british")
 
 ; Highlights the errors while writing
@@ -332,6 +328,12 @@
           (lambda () (setq-default flycheck-clang-language-standard "c++11"
                                    flycheck-gcc-language-standard "c++11")))
 
+; Sometimes weird things happen with flycheck (TODO: investigate),
+; uncommenting one of these may help
+;(add-to-list 'flycheck-disabled-checkers 'c/c++-clang)
+;(add-to-list 'flycheck-disabled-checkers 'gcc)
+;(setq-default flycheck-c/c++-clang-executable "/usr/bin/clang")
+
 ; company for c++ headers
 (add-hook 'c++-mode-hook
          (lambda () (add-to-list 'company-c-headers-path-system
@@ -339,6 +341,8 @@
 ; Auto-completion for C/C++ headers
 (add-to-list 'company-backends 'company-c-headers)
 
+; Auto-completion based on semantic db info
+(eval-after-load "company" '(add-to-list 'company-backend 'company-semantic))
 
 ; Show function signatures
 ; and enable semantic on C/C++

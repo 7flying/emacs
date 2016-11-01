@@ -334,6 +334,9 @@
 ;(add-to-list 'flycheck-disabled-checkers 'gcc)
 ;(setq-default flycheck-c/c++-clang-executable "/usr/bin/clang")
 
+; Auto-completion based on etags
+(eval-after-load "company" '(add-to-list 'company-backends 'company-etags))
+
 ; company for c++ headers
 (add-hook 'c++-mode-hook
          (lambda () (add-to-list 'company-c-headers-path-system

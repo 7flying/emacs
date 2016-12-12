@@ -163,7 +163,11 @@
 (global-set-key (kbd "C-c i")    'windmove-up)
 (global-set-key (kbd "C-c k")  'windmove-down)
 
-
+; Resize buffers
+(global-set-key (kbd "C-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "C-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "C-<down>") 'shrink-window)
+(global-set-key (kbd "C-<up>") 'enlarge-window)
 
 ;;;;
 ;;;; -- Programming language specific stuff --

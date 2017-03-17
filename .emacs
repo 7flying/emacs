@@ -59,7 +59,7 @@
 
 ;; Toggle NeoTree
 (require 'neotree)
-(global-set-key [f8] 'neotree-tgogle)
+(global-set-key [f8] 'neotree-toggle)
 (setq neo-smart-open t)
 
 ;; Rainbow delimiters everywhere

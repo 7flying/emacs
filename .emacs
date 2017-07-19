@@ -19,7 +19,7 @@
 (define-globalized-minor-mode
   global-fci-mode fci-mode (lambda () (fci-mode 1)))
 (global-fci-mode t)
-(setq-default fill-column 80)
+(setq-default fill-column 79)
 
 ;; Company mode
 (require 'company)
@@ -75,7 +75,7 @@
 (add-hook 'prog-mode-hook 'highlight-numbers-mode)
 
 ; Highlight indentation
-(add-hook 'prog-mode-hook 'highlight-indentation-mode)
+;(add-hook 'prog-mode-hook 'highlight-indentation-mode)
 
 ; y or n. 
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -95,8 +95,8 @@
 ; wrap lines
 (global-visual-line-mode)
 
-; Auto auto-fill (pun intended) to 80 columns on tex-mode
-(add-hook 'text-mode-hook '(lambda() (turn-on-auto-fill) (set-fill-column 80)))
+; Auto auto-fill (pun intended) to 79 columns on tex-mode
+(add-hook 'text-mode-hook '(lambda() (turn-on-auto-fill) (set-fill-column 79)))
 
 
 ; Cool mode bar
@@ -268,6 +268,11 @@
 (eval-after-load "company" '(add-to-list 'company-backends 'company-anaconda))
 (add-hook 'python-mode-hook 'anaconda-mode)
 
+; set flake8 as the default linter
+(defun enable-flake8 ()
+  (setq flycheck-checker 'python-flake8)
+  (setq flycheck-python-flake8-executable "/usr/local/bin/flake8"))
+(add-hook 'python-mode-hook 'enable-flake8)
 
 ;;
 ;; Arff mode

@@ -138,7 +138,10 @@
 ; Shell
 (require 'multi-term)
 (setq multi-term-program "/bin/bash")
-
+; force shell to open in the current buffer
+; see: https://github.com/syl20bnr/spacemacs/issues/6820
+(push (cons "\\*shell\\*" display-buffer--same-window-action)
+      display-buffer-alist)
 
 ;;
 ;; Custom keys

@@ -172,6 +172,21 @@
 (global-set-key (kbd "C-<down>") 'shrink-window)
 (global-set-key (kbd "C-<up>") 'enlarge-window)
 
+
+;;
+;; Ansi color function
+;;
+(require 'ansi-color)
+(defun display-ansi-colors ()
+  (interactive)
+  (ansi-color-apply-on-region (point-min) (point-max)))
+
+(defun display-ansi-colors-read-only ()
+  (interactive)
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+
+
 ;;;;
 ;;;; -- Programming language specific stuff --
 ;;;;

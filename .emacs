@@ -120,11 +120,12 @@
   '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
 
 ; Shell
-;(require 'multi-term)
-;(setq multi-term-program "/bin/bash")
+(require 'multi-term)
+(setq multi-term-program "/bin/bash")
 ; force shell to open in the current buffer
+; see: https://github.com/syl20bnr/spacemacs/issues/6820
 (push (cons "\\*shell\\*" display-buffer--same-window-action)
-       display-buffer-alist)
+      display-buffer-alist)
 
 ;;
 ;; Custom keys
@@ -156,7 +157,8 @@
 (global-set-key (kbd "C-<up>") 'enlarge-window)
 
 
-;; 
+
+;;
 ;; Ansi color function
 ;;
 (require 'ansi-color)
@@ -168,6 +170,7 @@
   (interactive)
   (let ((inhibit-read-only t))
     (ansi-color-apply-on-region (point-min) (point-max))))
+
 
 ;;;;
 ;;;; -- Programming language specific stuff --

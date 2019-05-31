@@ -20,13 +20,12 @@
   global-fci-mode fci-mode (lambda () (fci-mode 1)))
 (global-fci-mode t)
 (setq-default fill-column 79)
-
 ;; Company mode
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 
 ; Reduce the time after which the company auto completion popup opens
-(setq company-idle-delay 0.2)
+;(setq company-idle-delay 0.2)
 
 ; Reduce the number of characters before company kicks in
 (setq company-minimum-prefix-length 1)
@@ -42,20 +41,6 @@
     (lambda ()
      (define-key indent-or-complete-map (kdb "TAB") 'complete-or-indent)))
 (setq company-tooltip-align-annotations t)
-
-;; Yasnippet
-(eval-after-load 'auto-complete
-  '(progn
-     (require 'yasnippet)
-     (yas-global-mode 1)))
-(eval-after-load 'yasnippet
-  '(progn
-     (require 'auto-complete-config)
-     (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-     (ac-config-default)
-     (ac-set-trigger-key "TAB")
-     (ac-set-trigger-key "<tab>")))
-
 
 ;; Toggle NeoTree
 (require 'neotree)
@@ -95,9 +80,8 @@
 ; wrap lines
 (global-visual-line-mode)
 
-; Auto auto-fill (pun intended) to 79 columns on tex-mode
+; Auto auto-fill (pun intended) to 80 columns on tex-mode
 (add-hook 'text-mode-hook '(lambda() (turn-on-auto-fill) (set-fill-column 79)))
-
 
 ; Cool mode bar
 (require 'powerline)
@@ -136,9 +120,11 @@
   '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
 
 ; Shell
-(require 'multi-term)
-(setq multi-term-program "/bin/bash")
-
+;(require 'multi-term)
+;(setq multi-term-program "/bin/bash")
+; force shell to open in the current buffer
+(push (cons "\\*shell\\*" display-buffer--same-window-action)
+       display-buffer-alist)
 
 ;;
 ;; Custom keys
@@ -168,6 +154,20 @@
 (global-set-key (kbd "C-<right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "C-<down>") 'shrink-window)
 (global-set-key (kbd "C-<up>") 'enlarge-window)
+
+
+;; 
+;; Ansi color function
+;;
+(require 'ansi-color)
+(defun display-ansi-colors ()
+  (interactive)
+  (ansi-color-apply-on-region (point-min) (point-max)))
+
+(defun display-ansi-colors-read-only ()
+  (interactive)
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))
 
 ;;;;
 ;;;; -- Programming language specific stuff --
@@ -269,10 +269,10 @@
 (add-hook 'python-mode-hook 'anaconda-mode)
 
 ; set flake8 as the default linter
-(defun enable-flake8 ()
-  (setq flycheck-checker 'python-flake8)
-  (setq flycheck-python-flake8-executable "/usr/local/bin/flake8"))
-(add-hook 'python-mode-hook 'enable-flake8)
+;; (defun enable-flake8 ()
+;;   (setq flycheck-checker 'python-flake8)
+;;   (setq flycheck-python-flake8-executable "/usr/local/bin/flake8"))
+;; (add-hook 'python-mode-hook 'enable-flake8)
 
 ;;
 ;; Arff mode
@@ -317,9 +317,9 @@
 ;; NASM mode
 ;;
 
-(load "~/.emacs.d/modes/nasm-mode.el")
-(require 'nasm-mode)
-(add-to-list 'auto-mode-alist '("\\.\\(asm\\)$" . nasm-mode))
+;; (load "~/.emacs.d/modes/nasm-mode.el")
+;; (require 'nasm-mode)
+;; (add-to-list 'auto-mode-alist '("\\.\\(asm\\)$" . nasm-mode))
 
 ;;
 ;; C/C++ mode
@@ -350,6 +350,11 @@
 (add-hook 'c++-mode-hook
          (lambda () (add-to-list 'company-c-headers-path-system
                                  "/usr/include/c++/4.9/")))
+(add-hook 'c++-mode-hook
+    (lambda () (add-to-list 'company-c-headers-path-system
+                            "/usr/local/boost_1_61_0")))
+
+
 ; Auto-completion for C/C++ headers
 (add-to-list 'company-backends 'company-c-headers)
 
@@ -458,14 +463,14 @@
     ("67fdaff573b9ba142ab79cdc5b24b2b55b77cc786524efe33d3a4a7e1f82500b" default)))
  '(fancy-splash-image nil nil nil "You can only see as far as you think.")
  '(fci-rule-color "#343d46")
+ '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
  '(ido-mode (quote both) nil (ido))
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
  '(org-agenda-files (quote ("~/todo.org")))
- '(org-trello-files (quote ("~/org-trello/")) nil (org-trello))
  '(package-selected-packages
    (quote
-    (vlf spacegray-theme slime rainbow-mode rainbow-delimiters projectile paredit nyan-mode neotree markdown-mode js2-mode hl-todo highlight-numbers highlight-indentation flymake-python-pyflakes fill-column-indicator cider base16-theme auto-complete)))
+    (hackernews vlf spacegray-theme slime rainbow-mode rainbow-delimiters projectile paredit nyan-mode neotree markdown-mode js2-mode hl-todo highlight-numbers highlight-indentation flymake-python-pyflakes fill-column-indicator cider base16-theme auto-complete)))
  '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25)

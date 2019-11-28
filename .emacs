@@ -105,6 +105,9 @@
 
 ; Flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
+; To speed up flycheck enable on-the-fly only afer saving
+(setq flycheck-check-syntax-automatically '(save mode-enable))
+;; the default value was '(save idle-change new-line mode-enable
 
 ; TRAMP
 (setq tramp-default-method "ssh")

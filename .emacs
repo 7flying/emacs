@@ -90,6 +90,10 @@
     '(custom-set-variables
     '(neo-window-position (quote left))))
 
+; do not show some types of files. Until .elc (included) are the default values
+(setq neo-hidden-regexp-list '("^\\." "\\.cs\\.meta$" "\\.pyc$" "~$" "^#.*#$" "\\.elc$" "\\.lo$"))
+
+
 ; Rainbow delimiters everywhere
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
@@ -126,6 +130,9 @@
 (require 'flycheck-color-mode-line)
 (eval-after-load "flycheck"
   '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+
+; tmp files (~) will be saved in a special directory
+(setq backup-directory-alist `(("." . "~/.emacs-saves")))
 
 ;;
 ;; Ansi color function
@@ -174,6 +181,18 @@
     (lsp-ui-sideline-show-hover t)
     (lsp-ui-doc-enable nil))
 
+;;
+;; Go
+;;
+(require 'lsp-mode)
+(add-hook 'go-mode-hook #'lsp-deferred)
+
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;;
 ;; Customization
@@ -201,28 +220,26 @@
  '(ansi-term-color-vector
    [unspecified "#393939" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#6699cc" "#e8e6df"])
  '(auth-source-save-behavior nil)
- '(custom-enabled-themes (quote (base16-eighties-dark-seven)))
+ '(custom-enabled-themes '(base16-eighties-dark-seven))
  '(custom-safe-themes
-   (quote
-    ("54dd417837055b689d37f8d466f47dee0211894190225c50b00406b1b70d6b1b" "8514a60c65539e76b72905beb52af8b25beee8ac809e0fe9a15a574c11a12d0a" "67fdaff573b9ba142ab79cdc5b24b2b55b77cc786524efe33d3a4a7e1f82500b" default)))
+   '("d05246b6b0ef9e9c58d8348840cac1d81c7df8c72f884502c2b52d99ded757ee" "54dd417837055b689d37f8d466f47dee0211894190225c50b00406b1b70d6b1b" "8514a60c65539e76b72905beb52af8b25beee8ac809e0fe9a15a574c11a12d0a" "67fdaff573b9ba142ab79cdc5b24b2b55b77cc786524efe33d3a4a7e1f82500b" default))
  '(fancy-splash-image nil nil nil "You can only see as far as you think.")
  '(fci-rule-color "#343d46")
  '(flycheck-checker-error-threshold 1000)
- '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
- '(ido-mode (quote both) nil (ido))
+ '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+ '(ido-mode 'both nil (ido))
  '(inhibit-startup-screen t)
- '(org-agenda-files (quote ("~/todo.org")))
+ '(neo-window-position 'left)
+ '(org-agenda-files '("~/todo.org"))
  '(package-selected-packages
-   (quote
-    (lsp-ui lsp-mode flycheck-color-mode-line powerline flycheck company flycheck-rust rust-mode spacegray-theme vlf slime rainbow-mode rainbow-delimiters projectile paredit neotree markdown-mode hl-todo highlight-numbers highlight-indentation flymake-python-pyflakes fill-column-indicator cider base16-theme auto-complete)))
- '(send-mail-function (quote smtpmail-send-it))
+   '(go-mode eglot lsp-ui lsp-mode flycheck-color-mode-line powerline flycheck company flycheck-rust rust-mode spacegray-theme vlf slime rainbow-mode rainbow-delimiters projectile paredit neotree markdown-mode hl-todo highlight-numbers highlight-indentation flymake-python-pyflakes fill-column-indicator cider base16-theme auto-complete))
+ '(send-mail-function 'smtpmail-send-it)
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25)
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#bf616a")
+   '((20 . "#bf616a")
      (40 . "#DCA432")
      (60 . "#ebcb8b")
      (80 . "#B4EB89")
@@ -239,5 +256,5 @@
      (300 . "#bf616a")
      (320 . "#DCA432")
      (340 . "#ebcb8b")
-     (360 . "#B4EB89"))))
+     (360 . "#B4EB89")))
  '(vc-annotate-very-old-color nil))

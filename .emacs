@@ -117,9 +117,8 @@
 ; Flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
 ; To speed up flycheck enable on-the-fly only afer saving
-(setq flycheck-check-syntax-automatically '(save mode-enable))
 ;; the default value was '(save idle-change new-line mode-enable
-
+(setq flycheck-check-syntax-automatically '(save mode-enable))
 
 ; Show flycheck errors on popups
 (eval-after-load 'flycheck
@@ -130,6 +129,10 @@
 (require 'flycheck-color-mode-line)
 (eval-after-load "flycheck"
   '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+
+; flyspell
+(add-hook 'markdown-mode-hook 'flyspell-mode)
+
 
 ; tmp files (~) will be saved in a special directory
 (setq backup-directory-alist `(("." . "~/.emacs-saves")))
@@ -195,6 +198,12 @@
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;;
+;(add-hook 'go-mode-hook #'lsp-ui-doc-mode)
+;(add-hook 'go-mode-hook #'visual-line-mode)
+(with-eval-after-load 'go-mode
+  (visual-line-mode))
+
+;;
 ;; Customization
 ;;
 
@@ -220,26 +229,29 @@
  '(ansi-term-color-vector
    [unspecified "#393939" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#6699cc" "#e8e6df"])
  '(auth-source-save-behavior nil)
- '(custom-enabled-themes '(base16-eighties-dark-seven))
+ '(custom-enabled-themes (quote (base16-eighties-dark-seven)))
  '(custom-safe-themes
-   '("d05246b6b0ef9e9c58d8348840cac1d81c7df8c72f884502c2b52d99ded757ee" "54dd417837055b689d37f8d466f47dee0211894190225c50b00406b1b70d6b1b" "8514a60c65539e76b72905beb52af8b25beee8ac809e0fe9a15a574c11a12d0a" "67fdaff573b9ba142ab79cdc5b24b2b55b77cc786524efe33d3a4a7e1f82500b" default))
+   (quote
+    ("d05246b6b0ef9e9c58d8348840cac1d81c7df8c72f884502c2b52d99ded757ee" "54dd417837055b689d37f8d466f47dee0211894190225c50b00406b1b70d6b1b" "8514a60c65539e76b72905beb52af8b25beee8ac809e0fe9a15a574c11a12d0a" "67fdaff573b9ba142ab79cdc5b24b2b55b77cc786524efe33d3a4a7e1f82500b" default)))
  '(fancy-splash-image nil nil nil "You can only see as far as you think.")
  '(fci-rule-color "#343d46")
  '(flycheck-checker-error-threshold 1000)
- '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
- '(ido-mode 'both nil (ido))
+ '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
+ '(ido-mode (quote both) nil (ido))
  '(inhibit-startup-screen t)
- '(neo-window-position 'left)
- '(org-agenda-files '("~/todo.org"))
+ '(neo-window-position (quote left))
+ '(org-agenda-files (quote ("~/todo.org")))
  '(package-selected-packages
-   '(go-mode eglot lsp-ui lsp-mode flycheck-color-mode-line powerline flycheck company flycheck-rust rust-mode spacegray-theme vlf slime rainbow-mode rainbow-delimiters projectile paredit neotree markdown-mode hl-todo highlight-numbers highlight-indentation flymake-python-pyflakes fill-column-indicator cider base16-theme auto-complete))
- '(send-mail-function 'smtpmail-send-it)
+   (quote
+    (yaml-mode go-mode eglot lsp-ui lsp-mode flycheck-color-mode-line powerline flycheck company flycheck-rust rust-mode spacegray-theme vlf slime rainbow-mode rainbow-delimiters projectile paredit neotree markdown-mode hl-todo highlight-numbers highlight-indentation flymake-python-pyflakes fill-column-indicator cider base16-theme auto-complete)))
+ '(send-mail-function (quote smtpmail-send-it))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25)
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-   '((20 . "#bf616a")
+   (quote
+    ((20 . "#bf616a")
      (40 . "#DCA432")
      (60 . "#ebcb8b")
      (80 . "#B4EB89")
@@ -256,5 +268,5 @@
      (300 . "#bf616a")
      (320 . "#DCA432")
      (340 . "#ebcb8b")
-     (360 . "#B4EB89")))
+     (360 . "#B4EB89"))))
  '(vc-annotate-very-old-color nil))

@@ -1,3 +1,4 @@
+
 ;; Initialize package management
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (require 'package)
@@ -100,11 +101,12 @@
 ; Always highlight current line
 (global-hl-line-mode 1)
 
+
 ; Disable scroll bars and other bars
 (toggle-scroll-bar 0)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
-(fringe-mode 10)
+;(fringe-mode 10)
 
 ; 5 line margin on scrolls, step of 1
 (setq scroll-margin 5 scroll-conservatively 9999 scroll-step 1)
@@ -113,17 +115,34 @@
 (require 'powerline)
 (powerline-center-theme)
 
+; which function mode, displays the current function in the header
+(which-function-mode)
+(eval-after-load "which-func"
+  '(setq which-func-modes '(go-mode rust-mode python-mode)))
+
+(setq-default header-line-format
+              '((which-func-mode ("" which-func-format " "))))
+(setq mode-line-misc-info
+      ;; We remove Which Function Mode from the mode line, because it's mostly
+      ;; invisible here anyway.
+      (assq-delete-all 'which-func-mode mode-line-misc-info))
+
+; disable emacs from assuming that files ending on .xz are compressed and
+; loading the compression-mode  (aka org.osbuild.xz is not compressed)
+(setq auto-compression-mode nil)
 
 ; Flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
 ; To speed up flycheck enable on-the-fly only afer saving
-;; the default value was '(save idle-change new-line mode-enable
+; the default value was '(save idle-change new-line mode-enable
 (setq flycheck-check-syntax-automatically '(save mode-enable))
 
 ; Show flycheck errors on popups
-(eval-after-load 'flycheck
-    '(custom-set-variables
-    '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+;; (eval-after-load 'flycheck
+;;     '(custom-set-variables
+;;       '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+(with-eval-after-load 'flycheck
+  (flycheck-pos-tip-mode))
 
 ; Color the mode line based on the flycheck state
 (require 'flycheck-color-mode-line)
@@ -132,7 +151,6 @@
 
 ; flyspell
 (add-hook 'markdown-mode-hook 'flyspell-mode)
-
 
 ; tmp files (~) will be saved in a special directory
 (setq backup-directory-alist `(("." . "~/.emacs-saves")))
@@ -159,7 +177,6 @@
 ; Add flyspell on markdown by default
 (add-hook 'markdown-mode-hook 'flyspell-mode)
 
-
 ;;
 ;; Rust
 ;;
@@ -184,9 +201,28 @@
     (lsp-ui-sideline-show-hover t)
     (lsp-ui-doc-enable nil))
 
+; rust with tramp
+(with-eval-after-load "lsp-rust"
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-tramp-connection "rust-analyzer")
+    :remote? t
+    :major-modes '(rust-mode rustic-mode)
+    :initialization-options 'lsp-rust-analyzer--make-init-options
+    :notification-handlers (ht<-alist lsp-rust-notification-handlers)
+    :action-handlers (ht ("rust-analyzer.runSingle" #'lsp-rust--analyzer-run-single))
+    :library-folders-fn (lambda (_workspace) lsp-rust-analyzer-library-directories)
+    :after-open-fn (lambda ()
+                     (when lsp-rust-analyzer-server-display-inlay-hints
+                       (lsp-rust-analyzer-inlay-hints-mode)))
+    :ignore-messages nil
+    :server-id 'rust-analyzer-remote)))
+
 ;;
 ;; Go
 ;;
+
+(require 'go-mode)
 (require 'lsp-mode)
 (add-hook 'go-mode-hook #'lsp-deferred)
 
@@ -204,6 +240,16 @@
   (visual-line-mode))
 
 ;;
+;; json
+;;
+
+(defun json-mode-set-spaces ()
+  (make-local-variable 'js-indent-level)
+  (setq js-indent-level 2))
+
+(add-hook 'json-mode-hook #'json-mode-set-spaces)
+
+;;
 ;; Customization
 ;;
 
@@ -215,7 +261,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#2d2d2d" :foreground "#d3d0c8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "PfEd" :family "DejaVu Sans Mono")))))
+ '(default ((t (:inherit nil :stipple nil :background "#2d2d2d" :foreground "#d3d0c8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "PfEd" :family "DejaVu Sans Mono"))))
+ '(which-func ((t (:foreground "dark orange" :weight normal)))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -223,50 +270,49 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
-   [default bold shadow italic underline bold bold-italic bold])
+        [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
-   ["#393939" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#6699cc" "#e8e6df"])
+        ["#393939" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#6699cc" "#e8e6df"])
  '(ansi-term-color-vector
-   [unspecified "#393939" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#6699cc" "#e8e6df"])
+        [unspecified "#393939" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#6699cc" "#e8e6df"])
  '(auth-source-save-behavior nil)
- '(custom-enabled-themes (quote (base16-eighties-dark-seven)))
+ '(auto-composition-mode nil t)
+ '(custom-enabled-themes '(base16-eighties-dark-seven))
  '(custom-safe-themes
-   (quote
-    ("d05246b6b0ef9e9c58d8348840cac1d81c7df8c72f884502c2b52d99ded757ee" "54dd417837055b689d37f8d466f47dee0211894190225c50b00406b1b70d6b1b" "8514a60c65539e76b72905beb52af8b25beee8ac809e0fe9a15a574c11a12d0a" "67fdaff573b9ba142ab79cdc5b24b2b55b77cc786524efe33d3a4a7e1f82500b" default)))
+        '("d05246b6b0ef9e9c58d8348840cac1d81c7df8c72f884502c2b52d99ded757ee" "54dd417837055b689d37f8d466f47dee0211894190225c50b00406b1b70d6b1b" "8514a60c65539e76b72905beb52af8b25beee8ac809e0fe9a15a574c11a12d0a" "67fdaff573b9ba142ab79cdc5b24b2b55b77cc786524efe33d3a4a7e1f82500b" default))
  '(fancy-splash-image nil nil nil "You can only see as far as you think.")
  '(fci-rule-color "#343d46")
  '(flycheck-checker-error-threshold 1000)
- '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
- '(ido-mode (quote both) nil (ido))
+ '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)
+ '(ido-mode 'both nil (ido))
  '(inhibit-startup-screen t)
- '(neo-window-position (quote left))
- '(org-agenda-files (quote ("~/todo.org")))
+ '(neo-window-position 'left)
+ '(org-agenda-files '("~/todo.org"))
  '(package-selected-packages
-   (quote
-    (yaml-mode go-mode eglot lsp-ui lsp-mode flycheck-color-mode-line powerline flycheck company flycheck-rust rust-mode spacegray-theme vlf slime rainbow-mode rainbow-delimiters projectile paredit neotree markdown-mode hl-todo highlight-numbers highlight-indentation flymake-python-pyflakes fill-column-indicator cider base16-theme auto-complete)))
- '(send-mail-function (quote smtpmail-send-it))
+        '(json-mode flycheck-pos-tip yaml-mode go-mode eglot lsp-ui lsp-mode flycheck-color-mode-line powerline flycheck company flycheck-rust rust-mode spacegray-theme vlf slime rainbow-mode rainbow-delimiters projectile paredit neotree markdown-mode hl-todo highlight-numbers highlight-indentation flymake-python-pyflakes fill-column-indicator cider base16-theme auto-complete))
+ '(send-mail-function 'smtpmail-send-it)
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25)
  '(tool-bar-mode nil)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
-   (quote
-    ((20 . "#bf616a")
-     (40 . "#DCA432")
-     (60 . "#ebcb8b")
-     (80 . "#B4EB89")
-     (100 . "#89EBCA")
-     (120 . "#89AAEB")
-     (140 . "#C189EB")
-     (160 . "#bf616a")
-     (180 . "#DCA432")
-     (200 . "#ebcb8b")
-     (220 . "#B4EB89")
-     (240 . "#89EBCA")
-     (260 . "#89AAEB")
-     (280 . "#C189EB")
-     (300 . "#bf616a")
-     (320 . "#DCA432")
-     (340 . "#ebcb8b")
-     (360 . "#B4EB89"))))
- '(vc-annotate-very-old-color nil))
+        '((20 . "#bf616a")
+          (40 . "#DCA432")
+          (60 . "#ebcb8b")
+          (80 . "#B4EB89")
+          (100 . "#89EBCA")
+          (120 . "#89AAEB")
+          (140 . "#C189EB")
+          (160 . "#bf616a")
+          (180 . "#DCA432")
+          (200 . "#ebcb8b")
+          (220 . "#B4EB89")
+          (240 . "#89EBCA")
+          (260 . "#89AAEB")
+          (280 . "#C189EB")
+          (300 . "#bf616a")
+          (320 . "#DCA432")
+          (340 . "#ebcb8b")
+          (360 . "#B4EB89")))
+ '(vc-annotate-very-old-color nil)
+ '(which-function-mode t))

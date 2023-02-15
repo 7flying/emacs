@@ -151,6 +151,7 @@
 
 ; flyspell
 (add-hook 'markdown-mode-hook 'flyspell-mode)
+(setq-default ispell-program-name "aspell")
 
 ; tmp files (~) will be saved in a special directory
 (setq backup-directory-alist `(("." . "~/.emacs-saves")))
